@@ -7,10 +7,11 @@ let progress = require('progress'),
             new winston.transports.Console()
         ]
     }),
+    _ = require('lodash'),
     collect = require('../lib').collect;
 
 module.exports = ( topic, count, callback ) => {
-    callback = callback || () => {};
+    callback = callback || (() => {});
     let bar = new progress('Downloading Tweets :bar [:elapseds :percent]', {
         total: count,
         width: 100
@@ -19,7 +20,7 @@ module.exports = ( topic, count, callback ) => {
         topic,
         count,
         (data) => {
-            bar.tick();
+            bar.tick(data);
         },
         (error) => {
             logger.error("An error occurred ", error);

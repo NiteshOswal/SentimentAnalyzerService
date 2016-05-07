@@ -15,7 +15,8 @@
     },
     "defaults": {
         "collect": {
-            "count": 100
+            "count": 100,
+            "max_count": 100
         }
     }
 }
