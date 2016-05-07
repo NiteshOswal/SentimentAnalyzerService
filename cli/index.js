@@ -1,5 +1,7 @@
 'use strict';
 
 module.exports = {
-    collect: require('./collect')
+    collect: require('./collect'),
+    preprocess: require('./preprocess'),
+    synthesize: require('./synthesize')
 };
