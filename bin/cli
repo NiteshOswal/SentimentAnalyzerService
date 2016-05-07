@@ -1,8 +1,8 @@
 'use strict';
 
 let program = require('vorpal')(),
-    modules = require('./cli'),
-    def = require('./package.json');
+    modules = require('../cli'),
+    def = require('../package.json');
 
 program
     .command('collect <topic> [count]', 'Collect data on a topic from Twitter API and dumps it locally')

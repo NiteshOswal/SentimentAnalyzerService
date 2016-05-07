@@ -3,9 +3,6 @@
   "version": "1.0.0",
   "description": "Sentiment Analysis Service, it pulls down thoughts from throughout the world for twitter stuff",
   "main": "app.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
   "keywords": [
     "Twitter",
     "Machine",
@@ -28,6 +25,11 @@
     }
   ],
   "license": "MIT",
+  "private": true,
+  "scripts": {
+    "start": "node ./bin/www",
+    "cli": "node ./bin/cli"
+  },
   "dependencies": {
     "async": "^2.0.0-rc.4",
     "bluebird": "^3.3.5",
@@ -40,6 +42,13 @@
     "twitter": "^1.2.5",
     "utf8": "^2.1.1",
     "vorpal": "^1.10.10",
-    "winston": "^2.2.0"
+    "winston": "^2.2.0",
+    "body-parser": "~1.13.2",
+    "cookie-parser": "~1.3.5",
+    "debug": "~2.2.0",
+    "express": "~4.13.1",
+    "jade": "~1.11.0",
+    "morgan": "~1.6.1",
+    "serve-favicon": "~2.3.0"
   }
 }
