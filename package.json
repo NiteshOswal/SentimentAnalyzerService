@@ -1,0 +1,41 @@
+{
+  "name": "sas",
+  "version": "1.0.0",
+  "description": "Sentiment Analysis Service, it pulls down thoughts from throughout the world for twitter stuff",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "Twitter",
+    "Machine",
+    "Learning",
+    "SaaS"
+  ],
+  "author": "Nitesh Oswal <nit.oswal@gmail.com>",
+  "contributors": [
+    {
+      "name": "Rohit Choudhary",
+      "email": ""
+    },
+    {
+      "name": "Nitesh Oswal",
+      "email": ""
+    },
+    {
+      "name": "Priyaranjan Singh",
+      "email": ""
+    }
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "lodash": "^4.11.2",
+    "natural": "^0.4.0",
+    "progress": "^1.1.8",
+    "slug": "^0.9.1",
+    "twitter": "^1.2.5",
+    "utf8": "^2.1.1",
+    "vorpal": "^1.10.10",
+    "winston": "^2.2.0"
+  }
+}
