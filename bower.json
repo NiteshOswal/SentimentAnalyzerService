@@ -1,17 +1,7 @@
 {
   "name": "sas",
-  "version": "1.0.0",
   "description": "Sentiment Analysis Service, it pulls down thoughts from throughout the world for twitter stuff",
   "main": "app.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [
-    "Twitter",
-    "Machine",
-    "Learning",
-    "SaaS"
-  ],
   "author": "Nitesh Oswal <nit.oswal@gmail.com>",
   "contributors": [
     {
@@ -28,18 +18,20 @@
     }
   ],
   "license": "MIT",
-  "dependencies": {
-    "async": "^2.0.0-rc.4",
-    "bluebird": "^3.3.5",
-    "emoji-strip": "0.0.3",
-    "express": "^4.13.4",
-    "lodash": "^4.11.2",
-    "natural": "^0.4.0",
-    "progress": "^1.1.8",
-    "slug": "^0.9.1",
-    "twitter": "^1.2.5",
-    "utf8": "^2.1.1",
-    "vorpal": "^1.10.10",
-    "winston": "^2.2.0"
-  }
+  "keywords": [
+    "Twitter",
+    "Machine",
+    "Learning",
+    "SaaS"
+  ],
+  "moduleType": [],
+  "homepage": "",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
 }
