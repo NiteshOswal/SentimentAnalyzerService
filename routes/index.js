@@ -1,3 +1,5 @@
+'use strict';
+
 const path = require('path'),
     express = require('express'),
     async = require('async'),
