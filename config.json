@@ -5,9 +5,13 @@
         "access_token_key": "1034363990-2TESlEpWCQfChchJsOYDFmuOE3EsXeSU2kak1Xq",
         "access_token_secret": "rM1F3j5fCgdqJET8G3T5fLTIMGn4SiDOXLIxcPUhX6jbR"
     },
+    "mongo": {
+        
+    },
     "paths": {
         "blobs": "dumps/blobs/",
         "tokens": "dumps/tokens/",
+        "logs": "dumps/logs/",
         "positive_words": "data/positive-words.txt",
         "negative_words": "data/negative-words.txt",
         "stop_words": "data/stopwords.txt",
