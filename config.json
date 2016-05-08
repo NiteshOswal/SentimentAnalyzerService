@@ -13,7 +13,8 @@
         "positive_words": "data/positive-words.txt",
         "negative_words": "data/negative-words.txt",
         "stop_words": "data/stopwords.txt",
-        "afin": "data/afin.txt"
+        "afin": "data/afin.txt",
+        "slan_words": "data/slanwords.txt"
     },
     "defaults": {
         "collect": {
