@@ -16,7 +16,6 @@ router.get('/api', (req, res) => {
      * topic - The topic to pull for
      * count - The number of tweets to process
      */
-    console.log(JSON.stringify({topic: req.query.topic, count: req.query.count}));
     const worker = cp.fork(path.join(__dirname, "../lib/worker"), [JSON.stringify({topic: req.query.topic, count: req.query.count})]);
 
     worker.on("message", (m) => {

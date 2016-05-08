@@ -1,9 +1,22 @@
 #!/usr/bin/env node
 
 var program = require('vorpal')(),
+    cp = require('child_process'),
+    path = require('path'),
     modules = require('../cli'),
     def = require('../package.json');
 
+program
+    .command('process <topic> [count]', 'Do everything!')
+    .action(function(args, callback) {
+        var worker = cp.fork(path.join(__dirname, "../lib/worker"), [JSON.stringify({topic: args.topic, count: args.count})]);
+        worker.on("message", (m) => {
+            if(m == "exit") {
+                worker.send("exit");
+                callback();
+            }
+        });
+    });
 program
     .command('collect <topic> [count]', 'Collect data on a topic from Twitter API and dumps it locally')
     .action(function(args, callback) {
