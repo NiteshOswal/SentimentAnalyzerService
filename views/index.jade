@@ -1,5 +1,15 @@
 extends layout
 
 block content
-  h1= title
-  p Welcome to #{title}
+    .row
+        .col-lg-8.col-md-8.col-sm-8.col-xs-8.col-lg-offset-2.col-md-offset-2.col-sm-offset-2.col-xs-offset-2
+            form.row(role="form", name="search")
+                .form-group.col-lg-6.col-md-6.col-sm-6
+                    input.form-control(name="topic", placeholder="Enter Name, Place, Movie or a Twitter Hashtag")
+                .form-group.col-lg-4.col-md-4.col-sm-4
+                    select.form-control(name="count")
+                        - var options = [500, 1000, 2000, 5000, 10000, 50000, 100000]
+                        each option in options
+                            option(value=option)=option
+                .form-group.col-lg-2.col-md-2.col-sm-2
+                    button.btn.btn-info.btn-block(type="submit") Submit
