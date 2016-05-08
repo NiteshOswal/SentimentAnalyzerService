@@ -16,7 +16,7 @@ module.exports = ( topic, callback ) => {
         },
         (tweets) => {
             logger.info("All processing ends here!");
-            logger.info(`Created tokens for ${tweets.length} tweets`);
+            logger.info(`Preprocess ${tweets.length} `, {topic: topic}, "Finished");
             callback();
         }
     );

@@ -28,7 +28,7 @@ program
         var self = this;
         var q = "Are you sure you want to flush all the contents?";
         if(!!args.topic) {
-            q = `Are you sure you want to flush contents for ${args.topic}`;
+            q = `Are you sure you want to flush contents for "${args.topic}"?`;
         }
         return this.prompt({
             type: 'confirm',

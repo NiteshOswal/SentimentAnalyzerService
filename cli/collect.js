@@ -24,7 +24,7 @@ module.exports = ( topic, count, callback ) => {
             callback();
         },
         () => {
-            logger.info("All tweets pulled and saved");
+            logger.info("Collect ", {topic: topic, count: count}, "Finished");
             callback();
         }
     );

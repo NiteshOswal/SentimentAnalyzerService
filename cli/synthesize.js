@@ -18,7 +18,7 @@ module.exports = (topic, callback) => {
             callback();
         },
         (d) => {
-            logger.info("All synthesized");
+            logger.info("Synthesize ", {topic: topic}, "Finished");
             logger.info("Processed Data ", d);
             callback();
         }
