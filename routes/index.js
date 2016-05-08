@@ -7,7 +7,7 @@ const path = require('path'),
 
 /* GET home page. */
 router.get('/', (req, res, next) => {
-  res.render('index', { title: 'Express' });
+  res.render('index', { title: 'Sentiment Analyzer Service' });
 });
 
 router.get('/api', (req, res) => {
@@ -18,12 +18,14 @@ router.get('/api', (req, res) => {
      */
     const worker = cp.fork(path.join(__dirname, "../lib/worker"), [JSON.stringify({topic: req.query.topic, count: req.query.count})]);
     worker.on("message", (m) => {
-        if(m == "exit") {
-            worker.send("exit");
+        if(m === "exit") {
+          res.end();
+          worker.send("exit");
+        }
+        else{
+          res.write(m);
         }
     });
-
-    res.send({status: true});
 });
 
 router.get('/:slug', (req, res) => {

@@ -1,6 +1,0 @@
-human
-insect
-tree
-grass
-grow
-reproduce
