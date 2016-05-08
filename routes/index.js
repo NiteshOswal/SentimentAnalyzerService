@@ -6,7 +6,7 @@ const path = require('path'),
     lib = require('../lib');
 
 /* GET home page. */
-router.get('/', function(req, res, next) {
+router.get('/', (req, res, next) => {
   res.render('index', { title: 'Express' });
 });
 
@@ -17,7 +17,6 @@ router.get('/api', (req, res) => {
      * count - The number of tweets to process
      */
     const worker = cp.fork(path.join(__dirname, "../lib/worker"), [JSON.stringify({topic: req.query.topic, count: req.query.count})]);
-
     worker.on("message", (m) => {
         if(m == "exit") {
             worker.send("exit");
@@ -27,7 +26,7 @@ router.get('/api', (req, res) => {
     res.send({status: true});
 });
 
-router.get('/:slug', function(req, res) {
+router.get('/:slug', (req, res) => {
 
 });
 
