@@ -2,13 +2,10 @@
 
 let progress = require('progress'),
     winston = require('winston'),
-    logger = new (winston.Logger)({
-        transports: [
-            new winston.transports.Console()
-        ]
-    }),
+    lib = require('../lib'),
     _ = require('lodash'),
-    collect = require('../lib').collect;
+    collect = lib.collect,
+    logger = lib.helpers.logger;
 
 module.exports = ( topic, count, callback ) => {
     callback = callback || (() => {});

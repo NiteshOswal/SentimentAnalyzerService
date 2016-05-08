@@ -1,13 +1,10 @@
 'use strict';
 
 let winston = require('winston'),
-    logger = new (winston.Logger)({
-        transports: [
-            new winston.transports.Console()
-        ]
-    }),
     vorpal = require('vorpal')(),
-    synthesize = require('../lib').synthesize;
+    lib = require('../lib'),
+    synthesize = lib.synthesize,
+    logger = lib.helpers.logger;
 
 module.exports = (topic, callback) => {
     callback = callback || () => {};

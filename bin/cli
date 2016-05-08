@@ -1,15 +1,13 @@
 #!/usr/bin/env node
 
-'use strict';
-
-let program = require('vorpal')(),
+var program = require('vorpal')(),
     modules = require('../cli'),
     def = require('../package.json');
 
 program
     .command('collect <topic> [count]', 'Collect data on a topic from Twitter API and dumps it locally')
     .action(function(args, callback) {
-        modules.collect(args.topic, args.count, callback);
+        modules.collect(args.topic, parseInt(args.count), callback);
     });
 
 program
@@ -22,6 +20,28 @@ program
     .command('synthesize <topic>', 'Synthesize topic to find the final rating!')
     .action(function(args, callback) {
         modules.synthesize(args.topic, callback);
+    });
+
+program
+    .command('flush [topic]', 'Flush blobs and tokens for a topic')
+    .action(function(args, callback) {
+        var self = this;
+        var q = "Are you sure you want to flush all the contents?";
+        if(!!args.topic) {
+            q = `Are you sure you want to flush contents for ${args.topic}`;
+        }
+        return this.prompt({
+            type: 'confirm',
+            'name': 'continue',
+            default: false,
+            message: q
+        }, function(result) {
+            if(!result.continue) {
+                self.log("Not flushing anything!");
+            } else {
+                modules.flush(args.topic, callback);
+            }
+        });
     });
 
 program
