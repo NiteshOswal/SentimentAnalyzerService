@@ -4,10 +4,19 @@ const express = require('express'),
     path = require('path'),
     favicon = require('serve-favicon'),
     logger = require('morgan'),
+    mongoose = require('mongoose'),
     maxmind = require('maxmind'),
     ip = require('ip'),
     cookieParser = require('cookie-parser'),
-    bodyParser = require('body-parser');
+    bodyParser = require('body-parser'),
+    l = require('./lib').helpers.logger,
+    config = require('./config');
+
+const db = mongoose.connect(config.mongo, function(err) {
+  if(err) {
+    l.error("Mongo connect error ", err);
+  }
+});
 
 maxmind.init([path.join(__dirname, "/data/GeoLiteCity.dat"), path.join(__dirname, "/data/GeoLiteCityv6.dat")]);
 

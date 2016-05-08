@@ -5,9 +5,7 @@
         "access_token_key": "1034363990-2TESlEpWCQfChchJsOYDFmuOE3EsXeSU2kak1Xq",
         "access_token_secret": "rM1F3j5fCgdqJET8G3T5fLTIMGn4SiDOXLIxcPUhX6jbR"
     },
-    "mongo": {
-        
-    },
+    "mongo": "mongodb://localhost/sas",
     "paths": {
         "blobs": "dumps/blobs/",
         "tokens": "dumps/tokens/",
