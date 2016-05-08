@@ -1,6 +1,7 @@
 const path = require('path'),
     express = require('express'),
     async = require('async'),
+    base62 = require('base62'),
     cp = require('child_process'),
     router = express.Router(),
     lib = require('../lib');
@@ -16,18 +17,22 @@ router.get('/api', (req, res) => {
      * topic - The topic to pull for
      * count - The number of tweets to process
      */
-    const worker = cp.fork(path.join(__dirname, "../lib/worker"), [JSON.stringify({topic: req.query.topic, count: req.query.count})]);
+    const slug = base62.encode(req.query.topic),
+        worker = cp.fork(path.join(__dirname, "../lib/worker"), [JSON.stringify({topic: req.query.topic, count: req.query.count})]);
+    
     worker.on("message", (m) => {
         if(m == "exit") {
             worker.send("exit");
         }
     });
 
-    res.send({status: true});
+    res.send({status: true, location: req.sas, slug: slug});
 });
 
 router.get('/:slug', (req, res) => {
-
+    const slug = base62.decode(req.params.slug);
+    console.log(req.sas);
+    res.json(req.sas);
 });
 
 module.exports = router;
