@@ -1,6 +1,7 @@
 node_modules
 bower_components
-dumps/blobs/*
-dumps/tokens/*
+dumps/blobs/*.dump
+dumps/tokens/*.dump
+dumps/logs/*.log
 
 test.js
