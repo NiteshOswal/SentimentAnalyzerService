@@ -36,6 +36,7 @@
   ],
   "dependencies": {
     "bootstrap": "^3.3.6",
-    "bootbox.js": "bootbox#^4.4.0"
+    "bootbox.js": "bootbox#^4.4.0",
+    "font-awesome-min": "^4.6.1"
   }
 }

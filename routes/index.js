@@ -8,7 +8,7 @@ const path = require('path'),
 
 /* GET home page. */
 router.get('/', (req, res, next) => {
-  res.render('index', { title: 'Express' });
+  res.render('index', { title: 'Sentiment Analyzer Service' });
 });
 
 router.get('/api', (req, res) => {
@@ -21,12 +21,14 @@ router.get('/api', (req, res) => {
         worker = cp.fork(path.join(__dirname, "../lib/worker"), [JSON.stringify({topic: req.query.topic, count: req.query.count})]);
     
     worker.on("message", (m) => {
-        if(m == "exit") {
+        if(m === "exit") {
+            res.end();
             worker.send("exit");
+        } else {
+            let temp = JSON.parse(m); //basically when we get back rating from the place
+            res.json(Object.assign({}, {status: true, location: req.sas, slug: slug}, temp));
         }
     });
-
-    res.send({status: true, location: req.sas, slug: slug});
 });
 
 router.get('/:slug', (req, res) => {
