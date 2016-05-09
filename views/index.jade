@@ -13,9 +13,15 @@ block content
                             option(value=option)=option
                 .form-group.col-lg-2.col-md-2.col-sm-2
                     button.btn.btn-info.btn-block(type="submit") Submit
-            .panel.panel-default
-              .panel-body
-                h1#htopic
-                h4#hstatus
-                h4#hrating
-                h4#stars
+            .panel.panel-default#details(style="display: none;")
+                .panel-body
+                    h1#htopic
+                    h4#hstatus
+                    h4#hrating
+                    h4#stars
+
+                    canvas#stats(style="width: 100%;", height="400")
+
+
+
+
