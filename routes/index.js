@@ -8,6 +8,7 @@ const path = require('path'),
     cp = require('child_process'),
     router = express.Router(),
     lib = require('../lib'),
+    ngram_cli = require('../cli/ngram'),
     logger = lib.helpers.logger;
 
 require('../lib/models/ratings.model')();
@@ -75,6 +76,16 @@ router.get('/history', (req, res) => {
     lib.history(
         (data) => {
             res.json(data);
+        }
+    );
+});
+
+router.get('/ngram', (req, res) => {
+    ngram_cli(
+        req.query.topic,
+        req.query.count,
+        function(data) {
+            return res.json(data);
         }
     );
 });

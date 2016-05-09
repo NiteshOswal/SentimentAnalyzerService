@@ -16,7 +16,7 @@ module.exports = (topic, n, callback) => {
     },
     (e) => {
       logger.error(e);
-      callback();
+      callback([]);
     },
     (d) => {
       logger.info("Ngrams ",{topic: topic, n:n}, "Finished");
