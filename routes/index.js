@@ -20,7 +20,9 @@ const Ratings = mongoose.model('Ratings'),
 router.get('/', (req, res, next) => {
   res.render('index', { title: 'Sentiment Analyzer Service' });
 });
-
+router.get('/politics', (req, res) => {
+  res.render('politics');
+});
 router.get('/api', (req, res) => {
     /**
      * Gets data from req.query, 2 important keys here
