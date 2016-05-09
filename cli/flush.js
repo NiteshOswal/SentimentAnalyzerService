@@ -9,10 +9,12 @@ const rimraf = require('rimraf'),
 
 module.exports = (name, callback) => {
     let blobPath = config.paths.blobs + "*",
-        tokenPath = config.paths.tokens + "*";
+        tokenPath = config.paths.tokens + "*",
+        metaPath = config.paths.metas + "*";
     if(!!name) {
         blobPath = path.join(__dirname, "../", lib.helpers.dumpName(name) );
         tokenPath = path.join(__dirname, "../", lib.helpers.tokenDumpName(name) );
+        metaPath = path.join(__dirname, "../", lib.helpers.metaName(name) );
     }
     return async.parallel({
         flushBlob: (cb) => {
@@ -23,6 +25,11 @@ module.exports = (name, callback) => {
         flushTokens: (cb) => {
             rimraf(tokenPath, function() {
                 cb(null, "Flushed token(s)");
+            });
+        },
+        flushMetas: (cb) => {
+            rimraf(metaPath, function() {
+                cb(null, "Flushed Meta(s)");
             });
         }
     }, function(err, data) {
