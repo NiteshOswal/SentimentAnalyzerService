@@ -13,12 +13,15 @@ module.exports = ((callback) => {
                 logger.info("No blobs downloaded yet");
                 return [];
             }
+            let fin = [];
+            console.log("ID.\tNAME\tDOWNLOADED DATE");
             data.forEach((f, k) => {
-                let temp = f.split("-");
-                console.log("ID.\tNAME\tLAST UPDATED");
-                console.log((k+1) + ".\t" + [temp[0].replace(/-/g, " "), temp[1].replace(".dump", "")].join("\t"))
+                let temp = f.split("-"),
+                    row = [(k+1), temp[0].replace(/-/g, " "), temp[1].replace(".dump", "")];
+                console.log(row.join("\t"));
+                fin.push(row);
             });
-            return data;
+            return fin;
         },
         (error) => {
             logger.error(error);
