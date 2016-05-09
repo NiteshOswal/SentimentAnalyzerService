@@ -58,5 +58,11 @@ program
     });
 
 program
+    .command('history', 'Shows the blobs already downloaded')
+    .action(function(args, callback) {
+        modules.history(callback);
+    })
+
+program
     .delimiter(def.name + "$")
     .show();
