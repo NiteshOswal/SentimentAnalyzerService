@@ -2,6 +2,7 @@ node_modules
 bower_components
 dumps/blobs/*.dump
 dumps/tokens/*.dump
+dumps/metas/*.json
 dumps/logs/*.log
 
 test.js
