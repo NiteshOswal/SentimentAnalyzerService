@@ -24,15 +24,15 @@ program
     });
 
 program
-    .command('preprocess <topic>', 'Preprocess data for visualizations later')
+    .command('preprocess <topic> [date]', 'Preprocess data for visualizations later')
     .action(function(args, callback) {
-        modules.preprocess(args.topic, callback);
+        modules.preprocess(args.topic, args.date, callback);
     })
 
 program
-    .command('synthesize <topic>', 'Synthesize topic to find the final rating!')
+    .command('synthesize <topic> [date]', 'Synthesize topic to find the final rating!')
     .action(function(args, callback) {
-        modules.synthesize(args.topic, callback);
+        modules.synthesize(args.topic, args.date, callback);
     });
 
 program
@@ -41,7 +41,7 @@ program
         modules.ngram(args.topic, parseInt(args.n), callback);
     });
 program
-    .command('flush [topic]', 'Flush blobs and tokens for a topic')
+    .command('flush [topic] [date]', 'Flush blobs and tokens for a topic')
     .action(function(args, callback) {
         var self = this;
         var q = "Are you sure you want to flush all the contents?";
@@ -57,7 +57,8 @@ program
             if(!result.continue) {
                 self.log("Not flushing anything!");
             } else {
-                modules.flush(args.topic, callback);
+                self.log(args);
+                modules.flush(args.topic, args.date, callback);
             }
         });
     });

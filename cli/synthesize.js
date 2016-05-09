@@ -6,10 +6,11 @@ let winston = require('winston'),
     synthesize = lib.synthesize,
     logger = lib.helpers.logger;
 
-module.exports = (topic, callback) => {
+module.exports = (topic, date, callback) => {
     callback = callback || () => {};
     synthesize(
         topic,
+        date,
         (d) => {
 
         },

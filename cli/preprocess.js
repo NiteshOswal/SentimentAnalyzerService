@@ -5,10 +5,11 @@ let vorpal = require('vorpal')(),
     preprocess = lib.preprocess,
     logger = lib.helpers.logger;
 
-module.exports = ( topic, callback ) => {
+module.exports = ( topic, date, callback ) => {
     callback = callback || () => {};
     preprocess(
         topic,
+        date,
         (data) => {},
         (error) => {
             logger.error(error);

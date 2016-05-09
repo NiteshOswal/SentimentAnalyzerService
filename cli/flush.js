@@ -7,14 +7,14 @@ const rimraf = require('rimraf'),
     logger = lib.helpers.logger,
     config = require('../config');
 
-module.exports = (name, callback) => {
+module.exports = (name, date, callback) => {
     let blobPath = config.paths.blobs + "*",
         tokenPath = config.paths.tokens + "*",
         metaPath = config.paths.metas + "*";
     if(!!name) {
-        blobPath = path.join(__dirname, "../", lib.helpers.dumpName(name) );
-        tokenPath = path.join(__dirname, "../", lib.helpers.tokenDumpName(name) );
-        metaPath = path.join(__dirname, "../", lib.helpers.metaName(name) );
+        blobPath = path.join(__dirname, "../", lib.helpers.dumpName(name, date) );
+        tokenPath = path.join(__dirname, "../", lib.helpers.tokenDumpName(name, date) );
+        metaPath = path.join(__dirname, "../", lib.helpers.metaName(name, date) );
     }
     return async.parallel({
         flushBlob: (cb) => {
