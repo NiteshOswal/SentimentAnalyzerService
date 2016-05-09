@@ -20,6 +20,9 @@
         "collect": {
             "count": 100,
             "max_count": 100
+        },
+        "ngram": {
+            "count": 5
         }
     }
 }
