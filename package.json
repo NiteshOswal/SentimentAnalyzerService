@@ -1,6 +1,6 @@
 {
   "name": "sas",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Sentiment Analysis Service, it pulls down thoughts from throughout the world for twitter stuff",
   "main": "app.js",
   "keywords": [
