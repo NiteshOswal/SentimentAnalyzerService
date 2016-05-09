@@ -1,5 +1,14 @@
 'use strict';
 
+/**
+ * Really basic router which exposes really basic APIs.
+ * Things that would be nice to add soon
+ * 1. Validation
+ * 2. Query param cleanup
+ * 3. A better API structure
+ *
+ */
+
 const path = require('path'),
     express = require('express'),
     async = require('async'),
@@ -8,7 +17,7 @@ const path = require('path'),
     cp = require('child_process'),
     router = express.Router(),
     lib = require('../lib'),
-    ngram_cli = require('../cli/ngram'),
+    cli = require('../cli'),
     logger = lib.helpers.logger;
 
 require('../lib/models/ratings.model')();
@@ -73,19 +82,64 @@ router.get('/api', (req, res) => {
 });
 
 router.get('/history', (req, res) => {
-    lib.history(
-        (data) => {
-            res.render('history',{data:data, title: 'History'});
+    async.series({
+        history: (callback) => {
+            var flag = false;
+            lib.history(
+                (data) => {
+                    if(flag) return;
+                    if(data.length == 0) {
+                        logger.info("No blobs downloaded yet");
+                        return [];
+                    }
+                    let fin = [];
+                    data.forEach((f, k) => {
+                        let temp = f.split("-"),
+                            row = [(k+1), temp[0].replace(/-/g, " "), temp[1].replace(".dump", ""), f];
+                        fin.push(row);
+                    });
+                    flag = true;
+                    return callback(null, fin);
+                },
+                (error) => {
+                    if(flag) return;
+                    logger.error(error);
+                    flag = true;
+                    return callback(error, []);
+                },
+                () => {
+                    if(flag) return;
+                    flag = true;
+                    return callback(null, []);
+                }
+            );
         }
-    );
+    }, function(err, data) {
+        console.log(data);
+        res.render('history', {data: data.history, title: "History"});
+    })
+});
+
+router.get('/flush', (req, res) => {
+    cli.flush(req.query.name, () => { //I know I know, this is so bad!
+        res.json({status: true});
+    });
 });
 
 router.get('/ngram', (req, res) => {
-    ngram_cli(
+    lib.ngram(
         req.query.topic,
         req.query.count,
-        function(data) {
-            return res.json(data);
+        (data) => {
+            return res.json({status: true, data: data});
+        },
+        (err) => {
+            res.status(500);
+            logger.error("Ngram API ", data);
+            return res.json({status: true});
+        },
+        (data) => {
+            return res.json({status: true, data: data});
         }
     );
 });

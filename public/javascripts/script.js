@@ -96,4 +96,14 @@ $(document).ready(function() {
         calRating('',true)
         return false;
     });
+
+    $(".btn-flush").on('click', function() {
+        var self = this;
+        $.get('/flush?name=' + self.dataset.file, function(data) {
+            if(data.status) {
+                if(self.dataset.trigger)
+                    $(self.dataset.trigger).remove();
+            }
+        })
+    });
 });

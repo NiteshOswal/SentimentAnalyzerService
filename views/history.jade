@@ -1,12 +1,30 @@
 extends layout
 
 block content
-  .row
-    .col-lg-10.col-lg-offset-1
-      table.table.table-striped.table-bordered#historyTable
-        thead
-          tr
-            th(width="100").text-center #
-            th Topic
-            th Time
-        tbody
+    .row
+        .col-lg-10.col-lg-offset-1
+            h2 History
+                |  
+                button.btn-flush.btn.btn-primary.btn-md(type="button", data-file="", data-trigger=".history-rows") Flush All
+
+
+    .row
+        .col-lg-10.col-lg-offset-1
+            .pull-right
+            br
+            table.table.table-striped.table-bordered#history-table
+                thead
+                    tr
+                        th(width="100").text-center #
+                        th Topic
+                        th Downloaded Date
+                        th Actions
+                tbody
+                    each f in data
+                        tr(id=f[1].toString() + f[0].toString(), class="history-rows")
+                            td(width="100").text-center=f[0]
+                            td=f[1]
+                            td=f[2]
+                            td.text-center
+                                button.btn-flush.btn.btn-primary.btn-sm(type="button", data-file=f[1] + "-" + f[2], data-trigger="#" + f[1].toString() + f[0].toString()) Flush
+
