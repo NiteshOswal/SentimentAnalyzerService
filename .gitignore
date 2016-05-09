@@ -5,3 +5,4 @@ dumps/tokens/*.dump
 dumps/logs/*.log
 
 test.js
+npm-debug.log
