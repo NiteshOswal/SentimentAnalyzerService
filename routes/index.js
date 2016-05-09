@@ -69,6 +69,14 @@ router.get('/api', (req, res) => {
     });
 });
 
+router.get('/history', (req, res) => {
+    lib.history(
+        (data) => {
+            res.json(data);
+        }
+    );
+});
+
 router.get('/:slug', (req, res) => {
     Ratings.aggregate([
         {$match: {slug: req.params.slug}},
