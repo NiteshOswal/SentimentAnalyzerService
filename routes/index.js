@@ -21,7 +21,7 @@ router.get('/', (req, res, next) => {
   res.render('index', { title: 'Sentiment Analyzer Service' });
 });
 router.get('/politics', (req, res) => {
-  res.render('politics');
+  res.render('politics', { title: 'Political Status Analyzer' });
 });
 router.get('/api', (req, res) => {
     /**
@@ -74,7 +74,7 @@ router.get('/api', (req, res) => {
 router.get('/history', (req, res) => {
     lib.history(
         (data) => {
-            res.json(data);
+            res.render('history',{data:data, title: 'History'});
         }
     );
 });
