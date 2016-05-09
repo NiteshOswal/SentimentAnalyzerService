@@ -21,7 +21,11 @@ $(document).ready(function(){
     $('#hrating').html("");
     $(".help-block").html("");
     $('#stars').html("");
-    $.get(url, function(data){
+    $.get(url, function(data) {
+      if(!data.status) {
+        $("#hstatus").html("Hmm, something bad happened here");
+        return;
+      }
       var rating = data.total_score.toFixed(1),
         html = "",
         full_star = "<i class='fa fa-star'></i>",
