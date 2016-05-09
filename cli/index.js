@@ -5,5 +5,6 @@ module.exports = {
     flush: require('./flush'),
     history: require('./history'),
     preprocess: require('./preprocess'),
-    synthesize: require('./synthesize')
+    synthesize: require('./synthesize'),
+    ngram: require('./ngram')
 };

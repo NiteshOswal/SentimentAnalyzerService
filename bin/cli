@@ -36,6 +36,11 @@ program
     });
 
 program
+    .command('ngram <topic> [n]', 'Find top n ngrams')
+    .action(function(args, callback) {
+        modules.ngram(args.topic, parseInt(args.n), callback);
+    });
+program
     .command('flush [topic]', 'Flush blobs and tokens for a topic')
     .action(function(args, callback) {
         var self = this;
