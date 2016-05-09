@@ -1,0 +1,53 @@
+extends layout
+
+block content
+    .text-center.row
+      h1 Political Status Analyzer
+      p Compare two political figures based on recent tweets
+      .form-group.col-lg-2.col-lg-offset-5
+        label Tweet count
+        select.form-control(name="count", id="count")
+            - var options = [100, 500, 1000, 2000, 5000, 10000, 50000, 100000]
+            each option in options
+                option(value=option)=option
+    .row(style="margin-top:20px;")
+        .col-lg-5.col-lg-offset-1
+          .form-group
+            h4 Politician 1
+            input.form-control(id="topic1", placeholder="Enter Name of the politician")
+            .panel.panel-default#details1(style="display: none; margin-top:15px;")
+              .panel-body
+                .media
+                  .media-left
+                    a(href="#")
+                      img#thumb1.media-object(src="/public/images/placeholder.png")
+                  .media-body
+                    h4.media-heading#htopic1
+                    small#hstatus1
+                    h4
+                      span#hrating1
+                      span#stars1(style="margin-left:10px;")
+                    p#extract1
+
+        .col-lg-5
+          .form-group
+            h4 Politician 2
+            input.form-control(id="topic2", placeholder="Enter Name of the politician")
+            .panel.panel-default#details2(style="display: none; margin-top:15px;")
+              .panel-body
+                .media
+                  .media-left
+                    a(href="#")
+                      img#thumb2.media-object(src="/public/images/placeholder.png")
+                  .media-body
+                    h4.media-heading#htopic2
+                    small#hstatus2
+                    h4
+                      span#hrating2
+                      span#stars2(style="margin-left:10px;")
+                    p#extract2
+
+
+    .row.text-center(style="margin-top:20px;")
+      .form-group.col-lg-2.col-lg-offset-5
+          button.btn.btn-info.btn-block(id="compareBtn") Compare

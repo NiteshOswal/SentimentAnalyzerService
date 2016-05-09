@@ -15,10 +15,18 @@ block content
                     button.btn.btn-info.btn-block(type="submit") Submit
             .panel.panel-default#details(style="display: none;")
                 .panel-body
-                    h1#htopic
-                    h4#hstatus
-                    h4#hrating
-                    h4#stars
+                  .media
+                    .media-left
+                      a(href="#")
+                        img#thumb.media-object(src="/public/images/placeholder.png")
+                    .media-body
+                      h4.media-heading#htopic
+                      small#hstatus
+                      h4
+                        span#hrating
+                        span#stars(style="margin-left:10px;")
+                      p#extract
+
 
                     canvas#stats(style="width: 100%; height: 400px!important;")
 
