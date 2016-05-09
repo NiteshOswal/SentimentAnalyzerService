@@ -1,7 +1,6 @@
 /**
  * Object.values polyfill
  */
-
 const reduce = Function.bind.call(Function.call, Array.prototype.reduce);
 const isEnumerable = Function.bind.call(Function.call, Object.prototype.propertyIsEnumerable);
 const concat = Function.bind.call(Function.call, Array.prototype.concat);
@@ -20,6 +19,7 @@ $(document).ready(function(){
     $('#htopic').html($("#topic").val());
     $('#hstatus').html("Processing...");
     $('#hrating').html("");
+    $(".help-block").html("");
     $('#stars').html("");
     $.get(url, function(data){
       var rating = data.total_score.toFixed(1),
@@ -46,9 +46,9 @@ $(document).ready(function(){
         if(t >= 10) {
           html += full_star;
         } else {
-          if(t>5) {
+          if(t > 5) {
             html += half_star;
-          }else{
+          } else {
             html += empty_star;
           }
         }
@@ -57,6 +57,7 @@ $(document).ready(function(){
       $("#hstatus").html("");
       $("#stars").html(html);
       $("#hrating").html("Rating "+rating+"/10");
+      $(".help-block").html('<a href="/' + data.slug + '" target="_blank">API Endpoint for periodic updates of data</a>');
     });
     return false;
   });
