@@ -36,7 +36,7 @@ program
     });
 
 program
-    .command('ngram <topic> [n]', 'Find top n ngrams')
+    .command('ngram <topic> <n>', 'Find top n ngrams')
     .action(function(args, callback) {
         modules.ngram(args.topic, parseInt(args.n), callback);
     });
