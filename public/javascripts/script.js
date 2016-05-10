@@ -66,6 +66,23 @@ function calRating(id = "", isChart = false, autosubmit = false) { //this assume
                 }]
             }
         });
+        var pieFeedback = new Chart($('#pie-feedback'), {
+            type: 'pie',
+            data: {
+                labels: ['Positive Tweets', 'Negative Tweets'],
+                datasets: [{
+                    data: [data.positive_score, data.negative_score],
+                    backgroundColor: [
+                        "#4caf50",
+                        "#e51c23"
+                    ],
+                    hoverBackgroundColor: [
+                        "#439a46",
+                        "#cb171e"
+                    ]
+                }]
+            }
+        })
         // $.get('/ngram?topic=' + encodeURI(topic) + "&date=" + encodeURI(), functio)
       }
 
