@@ -12,7 +12,7 @@ if (!Object.values) {
     };
 }
 
-function calRating(id="", isChart=false){
+function calRating(id = "", isChart = false, autosubmit = false) { //this assumes ES6 support - TODO - remove this and set defaults..
   $('#details'+id).show();
   $('#htopic'+id).html($("#topic"+id).val());
   $('#hstatus'+id).html("Processing...");
@@ -20,8 +20,11 @@ function calRating(id="", isChart=false){
   $(".help-block").html("");
   $('#stars'+id).html("");
   var topic = $("#topic"+id).val(),
-      url = "/api?topic=" + encodeURI(topic) + "&count=" + $("#count").val(),
+      url = "/api?topic=" + encodeURI(topic) + "&count=" + $("#count").val() + "&date=" + $("#date").val(),
       wiki_url = "https://en.wikipedia.org/w/api.php?format=json&action=query&generator=search&gsrnamespace=0&gsrlimit=1&prop=pageimages|extracts&pilimit=max&exintro&explaintext&exsentences=1&exlimit=max&gsrsearch="+topic.replace(/ /g,"+")
+  if(autosubmit) {
+    url = url + "&autosubmit=1";
+  }
 
   $.ajax({
     url: wiki_url,
@@ -63,6 +66,7 @@ function calRating(id="", isChart=false){
                 }]
             }
         });
+        // $.get('/ngram?topic=' + encodeURI(topic) + "&date=" + encodeURI(), functio)
       }
 
       var t = rating * 10 / 2;
@@ -93,13 +97,14 @@ $(document).ready(function() {
     });
 
     $("#search").submit(function(event) {
+
         calRating('',true)
         return false;
     });
 
     $(".btn-flush").on('click', function() {
         var self = this;
-        $.get('/flush?name=' + self.dataset.file, function(data) {
+        $.get('/flush?name=' + self.dataset.file + "&date=" + self.dataset.date, function(data) {
             if(data.status) {
                 if(self.dataset.trigger)
                     $(self.dataset.trigger).remove();

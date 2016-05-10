@@ -5,14 +5,20 @@ block content
         .col-lg-10.col-md-10.col-sm-10.col-xs-10.col-lg-offset-1.col-md-offset-1.col-sm-offset-1.col-xs-offset-1
             form.row(role="form", name="search", id="search")
                 .form-group.col-lg-6.col-md-6.col-sm-6
-                    input.form-control(name="topic", id="topic", placeholder="Enter Name, Place, Movie or a Twitter Hashtag")
+                    input.form-control(name="topic", id="topic", value=query.name, placeholder="Enter Name, Place, Movie or a Twitter Hashtag")
                 .form-group.col-lg-4.col-md-4.col-sm-4
-                    select.form-control(name="count", id="count")
+                    select.form-control(name="count", id="count", value=query.count)
                         - var options = [100, 500, 1000, 2000, 5000, 10000, 50000, 100000]
                         each option in options
                             option(value=option)=option
                 .form-group.col-lg-2.col-md-2.col-sm-2
+                    input(type="hidden", name="date", id="date", value=query.date)
                     button.btn.btn-info.btn-block(type="submit") Submit
+            if autosubmit
+              script(type='text/javascript').
+                $(document).ready(function(e) {
+                  calRating('', true, true)
+                });
             .panel.panel-default#details(style="display: none;")
                 .panel-body
                   .media

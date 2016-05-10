@@ -5,9 +5,11 @@ html(lang="en")
     meta(charset="utf-8")
     meta(http-equiv="X-UA-Compatible", content="IE=edge")
     meta(name="viewport", content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no")
-    link(rel='stylesheet', href='/bower_components/bootstrap/dist/css/bootstrap.min.css')
+    //- link(rel='stylesheet', href='/bower_components/bootstrap/dist/css/bootstrap.min.css')
+    link(rel='stylesheet', href='/public/stylesheets/bootstrap.min.css')
     link(rel='stylesheet', href='/bower_components/font-awesome-min/css/font-awesome.min.css')
     link(rel='stylesheet', href='/public/stylesheets/style.css')
+    script(type='text/javascript', src='/bower_components/jquery/dist/jquery.min.js')
   body
     nav.navbar.navbar-default.navbar-fixed-top
         .container
@@ -23,7 +25,6 @@ html(lang="en")
                         a#help(href="#!") Help
     .container(style="margin-top: 100px;")
         block content
-    script(type='text/javascript', src='/bower_components/jquery/dist/jquery.min.js')
     script(type='text/javascript', src='/bower_components/bootstrap/dist/js/bootstrap.min.js')
     script(type='text/javascript', src='/bower_components/bootbox.js/bootbox.js')
     script(type='text/javascript', src='/bower_components/Chart.js/dist/Chart.min.js')

@@ -5,7 +5,7 @@ block content
         .col-lg-10.col-lg-offset-1
             h2 History
                 |  
-                button.btn-flush.btn.btn-primary.btn-md(type="button", data-file="", data-trigger=".history-rows") Flush All
+                button.btn-flush.btn.btn-danger.btn-md(type="button", data-file="", data-trigger=".history-rows") Flush All
 
 
     .row
@@ -18,7 +18,7 @@ block content
                         th(width="100").text-center #
                         th Topic
                         th Downloaded Date
-                        th Actions
+                        th.text-center Actions
                 tbody
                     each f in data
                         tr(id=f[1].toString() + f[0].toString(), class="history-rows")
@@ -26,5 +26,8 @@ block content
                             td=f[1]
                             td=f[2]
                             td.text-center
-                                button.btn-flush.btn.btn-primary.btn-sm(type="button", data-file=f[1] + "-" + f[2], data-trigger="#" + f[1].toString() + f[0].toString()) Flush
+                                a.btn.btn-success.btn-sm(href="/?name=" + f[1] + "&date=" + f[2]) View Stats
+                                |   
+                                button.btn-flush.btn.btn-danger.btn-sm(type="button", data-file=f[1], data-date=f[2], data-trigger="#" + f[1].toString() + f[0].toString()) Flush
+
 

@@ -28,18 +28,23 @@ const Ratings = mongoose.model('Ratings'),
 
 /* GET home page. */
 router.get('/', (req, res, next) => {
-  res.render('index', { title: 'Sentiment Analyzer Service' });
+    let autosubmit = false; //really hacky way to do what I want to!
+    if(req.query.name) {
+        autosubmit = true;
+    }
+    res.render('index', { title: 'Sentiment Analyzer Service', query: req.query, autosubmit: autosubmit});
 });
 router.get('/politics', (req, res) => {
-  res.render('politics', { title: 'Political Status Analyzer' });
+    res.render('politics', { title: 'Political Status Analyzer' });
 });
 router.get('/api', (req, res) => {
     /**
      * Gets data from req.query, 2 important keys here
      * topic - The topic to pull for
      * count - The number of tweets to process
+     * date - The date of execution
      */
-    const worker = cp.fork(path.join(__dirname, "../lib/worker"), [JSON.stringify({topic: req.query.topic, count: req.query.count})]);
+    const worker = cp.fork(path.join(__dirname, "../lib/worker"), [JSON.stringify({topic: req.query.topic, count: req.query.count, date: req.query.date, autosubmit: req.query.autosubmit})]);
     let slug = "";
     worker.on("message", (m) => {
         if(m === "exit") {
@@ -67,13 +72,13 @@ router.get('/api', (req, res) => {
                 } else {
                     logger.info("Ratings Saved ", data, "Finished");
                     slug = base62.encode(parseInt(data._id));
-                    Ratings.update({_id: data._id}, {slug: slug}, function(err, data) {
-                        if(err) {
-                            logger.error("Slug Update Error ", err);
-                        } else {
-                            logger.info("Slug Update Success ", data);
-                        }
-                    });
+                    // Ratings.update({_id: data._id}, {slug: slug}, function(err, data) {
+                    //     if(err) {
+                    //         logger.error("Slug Update Error ", err);
+                    //     } else {
+                    //         logger.info("Slug Update Success ", data);
+                    //     }
+                    // });
                     return res.json(Object.assign({}, {status: true, location: req.sas, slug: slug}, temp));
                 }
             });
@@ -121,7 +126,7 @@ router.get('/history', (req, res) => {
 });
 
 router.get('/flush', (req, res) => {
-    cli.flush(req.query.name, () => { //I know I know, this is so bad!
+    cli.flush(req.query.name, req.query.date, () => { //I know I know, this is so bad!
         res.json({status: true});
     });
 });
