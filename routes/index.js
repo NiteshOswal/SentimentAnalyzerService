@@ -33,10 +33,10 @@ router.get('/', (req, res, next) => {
     if(req.query.name) {
         autosubmit = true;
     }
-    res.render('index', { title: 'Sentiment Analyzer Service', query: req.query, autosubmit: autosubmit, date: moment().format('MM.DD.Y')});
+    res.render('index', { title: 'Feedback Analyzer', query: req.query, autosubmit: autosubmit, date: moment().format('MM.DD.Y')});
 });
-router.get('/politics', (req, res) => {
-    res.render('politics', { title: 'Political Status Analyzer', date: moment().format('MM.DD.Y') });
+router.get('/psa', (req, res) => {
+    res.render('psa', { title: 'Popular Status Analyzer', date: moment().format('MM.DD.Y') });
 });
 router.get('/api', (req, res) => {
     /**
@@ -122,7 +122,7 @@ router.get('/history', (req, res) => {
         }
     }, function(err, data) {
         console.log(data);
-        res.render('history', {data: data.history, title: "History"});
+        res.render('history', {data: data.history, title: "Data Collection History"});
     })
 });
 
