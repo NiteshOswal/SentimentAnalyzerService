@@ -14,6 +14,7 @@ const path = require('path'),
     async = require('async'),
     mongoose = require('mongoose'),
     base62 = require('base62'),
+    moment = require('moment'),
     cp = require('child_process'),
     router = express.Router(),
     lib = require('../lib'),
@@ -32,10 +33,10 @@ router.get('/', (req, res, next) => {
     if(req.query.name) {
         autosubmit = true;
     }
-    res.render('index', { title: 'Sentiment Analyzer Service', query: req.query, autosubmit: autosubmit});
+    res.render('index', { title: 'Sentiment Analyzer Service', query: req.query, autosubmit: autosubmit, date: moment().format('MM.DD.Y')});
 });
 router.get('/politics', (req, res) => {
-    res.render('politics', { title: 'Political Status Analyzer' });
+    res.render('politics', { title: 'Political Status Analyzer', date: moment().format('MM.DD.Y') });
 });
 router.get('/api', (req, res) => {
     /**
@@ -44,7 +45,7 @@ router.get('/api', (req, res) => {
      * count - The number of tweets to process
      * date - The date of execution
      */
-    const worker = cp.fork(path.join(__dirname, "../lib/worker"), [JSON.stringify({topic: req.query.topic, count: req.query.count, date: req.query.date, autosubmit: req.query.autosubmit})]);
+    const worker = cp.fork(path.join(__dirname, "../lib/worker"), [JSON.stringify({topic: req.query.topic, count: req.query.count, date: !req.query.date?"":req.query.date, autosubmit: req.query.autosubmit})]);
     let slug = "";
     worker.on("message", (m) => {
         if(m === "exit") {
@@ -72,13 +73,13 @@ router.get('/api', (req, res) => {
                 } else {
                     logger.info("Ratings Saved ", data, "Finished");
                     slug = base62.encode(parseInt(data._id));
-                    // Ratings.update({_id: data._id}, {slug: slug}, function(err, data) {
-                    //     if(err) {
-                    //         logger.error("Slug Update Error ", err);
-                    //     } else {
-                    //         logger.info("Slug Update Success ", data);
-                    //     }
-                    // });
+                    Ratings.update({_id: data._id}, {slug: slug}, function(err, data) {
+                        if(err) {
+                            logger.error("Slug Update Error ", err);
+                        } else {
+                            logger.info("Slug Update Success ", data);
+                        }
+                    });
                     return res.json(Object.assign({}, {status: true, location: req.sas, slug: slug}, temp));
                 }
             });
