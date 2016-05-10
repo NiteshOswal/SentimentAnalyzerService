@@ -7,9 +7,9 @@ var program = require('vorpal')(),
     def = require('../package.json');
 
 program
-    .command('process <topic> [count]', 'Do everything!')
+    .command('process <topic> [count] [date]', 'Do everything!')
     .action(function(args, callback) {
-        var worker = cp.fork(path.join(__dirname, "../lib/worker"), [JSON.stringify({topic: args.topic, count: args.count})]);
+        var worker = cp.fork(path.join(__dirname, "../lib/worker"), [JSON.stringify({topic: args.topic, count: args.count, date: args.date})]);
         worker.on("message", (m) => {
             if(m == "exit") {
                 worker.send("exit");
@@ -36,9 +36,9 @@ program
     });
 
 program
-    .command('ngram <topic> <n>', 'Find top n ngrams')
+    .command('ngram <topic> <n> [date]', 'Find top n ngrams')
     .action(function(args, callback) {
-        modules.ngram(args.topic, parseInt(args.n), callback);
+        modules.ngram(args.topic, parseInt(args.n), args.date, callback);
     });
 program
     .command('flush [topic] [date]', 'Flush blobs and tokens for a topic')
