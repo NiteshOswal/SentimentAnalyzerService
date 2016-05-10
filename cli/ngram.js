@@ -6,11 +6,12 @@ let winston = require('winston'),
     ngram = lib.ngram,
     logger = lib.helpers.logger;
 
-module.exports = (topic, n, callback) => {
+module.exports = (topic, n, date, callback) => {
   callback = callback || () => {};
   ngram(
     topic,
     n,
+    date,
     (d) => {
 
     },
