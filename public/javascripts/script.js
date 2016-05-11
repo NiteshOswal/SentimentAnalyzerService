@@ -20,7 +20,7 @@ function calRating(id = "", isChart = false, autosubmit = false) { //this assume
   $(".help-block").html("");
   $('#stars'+id).html("");
   var topic = $("#topic"+id).val(),
-      url = "/api?topic=" + encodeURI(topic) + "&count=" + $("#count").val() + "&date=" + $("#date").val(),
+      url = "/api?topic=" + encodeURI(topic) + "&count=" + encodeURI($("#count").val()) + "&date=" + encodeURI($("#date").val()),
       wiki_url = "https://en.wikipedia.org/w/api.php?format=json&action=query&generator=search&gsrnamespace=0&gsrlimit=1&prop=pageimages|extracts&pilimit=max&exintro&explaintext&exsentences=1&exlimit=max&gsrsearch="+topic.replace(/ /g,"+")
   if(autosubmit) {
     url = url + "&autosubmit=1";
@@ -83,7 +83,20 @@ function calRating(id = "", isChart = false, autosubmit = false) { //this assume
                 }]
             }
         })
-        // $.get('/ngram?topic=' + encodeURI(topic) + "&date=" + encodeURI(), functio)
+        $.get('/ngram?topic=' + encodeURI(topic) + "&date=" + encodeURI($("#date").val()) + "&count=2", function(ngram) {
+            console.log(ngram);
+            if(ngram.status) {
+                var pieNgrams = new Chart($("#pie-ngrams"), {
+                    type: 'pie',
+                    data: {
+                        labels: ngram.data.map((v) => { return v.name; }),
+                        datasets: [{
+                            data: ngram.data.map((v) => {return v.count; })
+                        }]
+                    }
+                });
+            }
+        });
       }
 
       var t = rating * 10 / 2;

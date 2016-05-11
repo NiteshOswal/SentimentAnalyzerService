@@ -136,13 +136,14 @@ router.get('/ngram', (req, res) => {
     lib.ngram(
         req.query.topic,
         req.query.count,
+        req.query.date,
         (data) => {
             return res.json({status: true, data: data});
         },
         (err) => {
             res.status(500);
             logger.error("Ngram API ", data);
-            return res.json({status: true});
+            return res.json({status: false});
         },
         (data) => {
             return res.json({status: true, data: data});
