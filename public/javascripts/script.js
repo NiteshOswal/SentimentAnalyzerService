@@ -20,8 +20,8 @@ function calRating(id = "", isChart = false, autosubmit = false) { //this assume
   $(".help-block").html("");
   $('#stars'+id).html("");
   var topic = $("#topic"+id).val(),
-      url = "/api?topic=" + encodeURI(topic) + "&count=" + $("#count").val() + "&date=" + $("#date").val(),
-      wiki_url = "https://en.wikipedia.org/w/api.php?format=json&action=query&generator=search&gsrnamespace=0&gsrlimit=1&prop=pageimages|extracts&pilimit=max&exintro&explaintext&exsentences=1&exlimit=max&gsrsearch="+topic.replace(/ /g,"+")
+      count = $('#count').val(),
+      wiki_url = "https://en.wikipedia.org/w/api.php?format=json&action=query&generator=search&gsrnamespace=0&gsrlimit=1&prop=pageimages|extracts&pilimit=max&exintro&explaintext&exsentences=1&exlimit=max&gsrsearch="+topic.replace(/ /g,"+");
   if(autosubmit) {
     url = url + "&autosubmit=1";
   }
@@ -36,74 +36,138 @@ function calRating(id = "", isChart = false, autosubmit = false) { //this assume
         $.each(wiki, function(w, d){
           temp = d;
         });
-        $("#extract"+id).html(temp.extract);
-        $("#thumb"+id).attr("src",temp.thumbnail.source)
+        if(!temp.thumbnail){
+          $("#extract"+id).html("Ambiguous results.");
+        }
+        else{
+          $("#extract"+id).html(temp.extract);
+          $("#thumb"+id).attr("src",temp.thumbnail.source)
+        }
       }
     }
   });
 
-  $.get(url, function(data) {
-      if (!data.status) {
-          $("#hstatus"+id).html("Hmm, something bad happened here");
-          return;
-      }
-      var rating = data.total_score.toFixed(1),
-          html = "",
-          full_star = "<i class='fa fa-star'></i>",
-          half_star = "<i class='fa fa-star-half-o'></i>",
-          empty_star = "<i class='fa fa-star-o'></i>";
+  var url = "ws://" + document.URL.substr(7).split('/')[0],
+      wsCtor = window['MozWebSocket'] ? MozWebSocket : WebSocket,
+      socket = new wsCtor(url, 'ws-api'),
+      total = 0,
+      check = 0,
+      msg = {method:'collect', topic:topic, count:count};
 
-      if(isChart){
-        var stats = new Chart($('#stats'), {
-            type: 'bar',
-            data: {
-                labels: Object.keys(data.score_by_date),
-                datasets: [{
-                    label: "Score",
-                    data: Object.values(data.score_by_date).map(function(v) {
-                        return v.total_score;
-                    })
-                }]
-            }
-        });
-        var pieFeedback = new Chart($('#pie-feedback'), {
-            type: 'pie',
-            data: {
-                labels: ['Positive Tweets', 'Negative Tweets'],
-                datasets: [{
-                    data: [data.positive_score, data.negative_score],
-                    backgroundColor: [
-                        "#4caf50",
-                        "#e51c23"
-                    ],
-                    hoverBackgroundColor: [
-                        "#439a46",
-                        "#cb171e"
-                    ]
-                }]
-            }
-        })
-        // $.get('/ngram?topic=' + encodeURI(topic) + "&date=" + encodeURI(), functio)
+  socket.onopen = function(connection){
+    socket.send(JSON.stringify(msg));
+    console.log('Connected. Message sent: '+JSON.stringify(msg));
+  };
+  socket.onmessage = function(message) {
+    var res = JSON.parse(message.data);
+    if(msg.method === 'collect'){
+      var p = '';
+      if(res.type === "end"){
+        total = 0;
+        msg.method = 'preprocess';
+        res.type = '';
+        res.data = '';
+        socket.send(JSON.stringify(msg));
       }
+      else{
+        total += parseInt(res.data);
+        p = parseInt((total*100)/count);
+        if(!p || p>100) p=100+'%';
+        else p = p+'%';
+      }
+      $('#hstatus'+id).html("Collecting Data "+p);
+    }
+    if(msg.method === 'preprocess'){
+      var p ='';
+      if(res.type === "end"){
+        total = 0;
+        res.type = '';
+        res.data = '';
+        msg.method = 'synthesize';
+        socket.send(JSON.stringify(msg));
+      }else{
+        if(res.data){
+          total += parseInt(res.data);
+          p = total;
+        }
+      }
+      $('#hstatus'+id).html("Preprocessing Data: "+p+" tweets processed");
+    }
+    if(msg.method === 'synthesize'){
+      var p = 0;
+      if(res.type === "end"){
+        var rating = res.data.total_score.toFixed(1),
+            html = "",
+            full_star = "<i class='fa fa-star'></i>",
+            half_star = "<i class='fa fa-star-half-o'></i>",
+            empty_star = "<i class='fa fa-star-o'></i>";
 
-      var t = rating * 10 / 2;
-      for (var i = 0; i < 5; i++) {
-          if (t >= 10) {
-              html += full_star;
-          } else {
-              if (t > 5) {
-                  html += half_star;
-              } else {
-                  html += empty_star;
+        if(isChart){
+          var stats = new Chart($('#stats'), {
+              type: 'bar',
+              data: {
+                  labels: Object.keys(res.data.score_by_date),
+                  datasets: [{
+                      label: "Score",
+                      data: Object.values(res.data.score_by_date).map(function(v) {
+                          return v.total_score;
+                      })
+                  }]
               }
-          }
-          t -= 10;
+          });
+          var pieFeedback = new Chart($('#pie-feedback'), {
+              type: 'pie',
+              data: {
+                  labels: ['Positive Tweets', 'Negative Tweets'],
+                  datasets: [{
+                      data: [res.data.positive_score, res.data.negative_score],
+                      backgroundColor: [
+                          "#4caf50",
+                          "#e51c23"
+                      ],
+                      hoverBackgroundColor: [
+                          "#439a46",
+                          "#cb171e"
+                      ]
+                  }]
+              }
+          })
+          // $.get('/ngram?topic=' + encodeURI(topic) + "&date=" + encodeURI(), functio)
+        }
+
+        var t = rating * 10 / 2;
+        for (var i = 0; i < 5; i++) {
+            if (t >= 10) {
+                html += full_star;
+            } else {
+                if (t > 5) {
+                    html += half_star;
+                } else {
+                    html += empty_star;
+                }
+            }
+            t -= 10;
+        }
+        $("#hstatus"+id).html("");
+        $("#stars"+id).html(html);
+        $("#hrating"+id).html("Rating " + rating + "/10");
+        $(".help-block").html('<a href="/' + res.data.slug + '" target="_blank">API Endpoint for periodic updates of data</a>');
+        return;
+      }else{
+        if(res.data){
+          total += parseInt(res.data);
+          p = total;
+        }
       }
-      $("#hstatus"+id).html("");
-      $("#stars"+id).html(html);
-      $("#hrating"+id).html("Rating " + rating + "/10");
-      $(".help-block").html('<a href="/' + data.slug + '" target="_blank">API Endpoint for periodic updates of data</a>');
-  });
+      $('#hstatus'+id).html("Synthesizing Data: "+p+" tweets processed");
+    }
+    console.log(message.data);
+  };
+
+  socket.onclose = function() {
+    console.log('connection closed');
+  };
+
 }
 
 $(document).ready(function() {
@@ -113,11 +177,10 @@ $(document).ready(function() {
         calRating(2);
     });
 
-    $("#search").submit(function(event) {
-
-        calRating('',true)
-        return false;
+    $("#submitBtn").on('click',function(event) {
+      calRating('',true)
     });
+
 
     $(".btn-flush").on('click', function() {
         var self = this;

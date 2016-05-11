@@ -5,8 +5,13 @@
  */
 
 var app = require('../app');
+var lib = require('../lib');
+var cli = require('../cli');
 var debug = require('debug')('sas:server');
 var http = require('http');
+var webSocketServer = require('websocket').server;
+var cp = require('child_process');
+var path = require('path');
 
 /**
  * Get port from environment and store in Express.
@@ -88,3 +93,85 @@ function onListening() {
     : 'port ' + addr.port;
   debug('Listening on ' + bind);
 }
+
+var wsServer = new webSocketServer({
+  httpServer: server,
+  fragmentOutgoingMessages: false
+});
+wsServer.on('request', function(req){
+  var connection = req.accept('ws-api', req.origin);
+  console.log('connected');
+  connection.on('close', function(){});
+  connection.on('message', function(message){
+    if(message.type === 'utf8'){
+      var query = JSON.parse(message.utf8Data);
+      var delay = 0;
+      if(query.method === 'collect'){
+        lib.collect(
+          query.topic,
+          parseInt(query.count),
+          (data) => {
+            var msg = {type:"data",data:data};
+            connection.sendUTF(JSON.stringify(msg));
+          },
+          (err) => {
+            var msg = {type:"error", data:err};
+            connection.sendUTF(JSON.stringify(msg));
+          },
+          (data) => {
+            var msg = {type:"end", data:data};
+            connection.sendUTF(JSON.stringify(msg));
+            console.log("Message Sent(collect): "+JSON.stringify(msg));
+          }
+        );
+      }
+      if(query.method === 'preprocess'){
+        lib.preprocess(
+          query.topic,
+          '',
+          (data) => {
+            delay++;
+            var msg = {type:"data",data:delay};
+            if(delay === 100){
+              connection.sendUTF(JSON.stringify(msg));
+              delay = 0;
+            }
+          },
+          (err) => {
+            var msg = {type:"error", data:err};
+            connection.sendUTF(JSON.stringify(msg));
+          },
+          (data) => {
+            var msg = {type:"end"};
+            connection.sendUTF(JSON.stringify(msg));
+            console.log("Message Sent(preprocess): "+JSON.stringify(msg));
+            delay = 0;
+          }
+        );
+      }
+      if(query.method === 'synthesize'){
+        lib.synthesize(
+          query.topic,
+          '',
+          (data) => {
+            delay++;
+            var msg = {type:"data",data:delay};
+            if(delay === 100){
+              connection.sendUTF(JSON.stringify(msg));
+              delay = 0;
+            }
+          },
+          (err) => {
+            var msg = {type:"error", data:err};
+            connection.sendUTF(JSON.stringify(msg));
+          },
+          (data) => {
+            var msg = {type:"end", data:data};
+            connection.sendUTF(JSON.stringify(msg));
+            console.log("Message Sent(synthesize): "+JSON.stringify(msg));
+          }
+        );
+      }
+    }
+  });
+});
