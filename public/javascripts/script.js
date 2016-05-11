@@ -12,7 +12,10 @@ if (!Object.values) {
     };
 }
 
-var pieNgrams = null;
+var pieNgrams = null,
+    stats = null,
+    pieFeedback = null;
+
 
 function calRating(id = "", isChart = false, autosubmit = false) { //this assumes ES6 support - TODO - remove this and set defaults..
   $('#details'+id).show();
@@ -55,6 +58,9 @@ function calRating(id = "", isChart = false, autosubmit = false) { //this assume
       total = 0,
       check = 0,
       msg = {method:'collect', topic:topic, count:count};
+  if(autosubmit){
+    msg.method = 'preprocess';    
+  }
 
   socket.onopen = function(connection){
     socket.send(JSON.stringify(msg));
@@ -105,8 +111,8 @@ function calRating(id = "", isChart = false, autosubmit = false) { //this assume
             empty_star = "<i class='fa fa-star-o'></i>";
 
         if(isChart){
-
-          var stats = new Chart($('#stats'), {
+          if(stats) stats.destroy();
+          stats = new Chart($('#stats'), {
               type: 'bar',
               data: {
                   labels: Object.keys(res.data.score_by_date),
@@ -128,7 +134,8 @@ function calRating(id = "", isChart = false, autosubmit = false) { //this assume
                 }
               }
           });
-          var pieFeedback = new Chart($('#pie-feedback'), {
+          if(pieFeedback) pieFeedback.destroy();
+          pieFeedback = new Chart($('#pie-feedback'), {
               type: 'pie',
               data: {
                   labels: ['Positive Tweets', 'Negative Tweets'],
