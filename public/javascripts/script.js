@@ -120,7 +120,8 @@ function calRating(id = "", isChart = false, autosubmit = false) { //this assume
                       label: "Score",
                       data: Object.values(res.data.score_by_date).map(function(v) {
                           return v.total_score;
-                      })
+                      }),
+                      backgroundColor: randomColor({count: Object.values(res.data.score_by_date).length, hue: 'purple'})
                   }]
               },
               options: {
