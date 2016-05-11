@@ -151,7 +151,8 @@ function calRating(id = "", isChart = false, autosubmit = false) { //this assume
                       data: {
                           labels: ngram.data.map((v) => { return v.name; }),
                           datasets: [{
-                              data: ngram.data.map((v) => {return v.count; })
+                              data: ngram.data.map((v) => {return v.count; }),
+                              backgroundColor: randomColor({count: ngram.data.length, 'hue': 'green'})
                           }]
                       }
                   });
