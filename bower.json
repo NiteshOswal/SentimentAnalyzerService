@@ -38,6 +38,7 @@
     "bootstrap": "^3.3.6",
     "bootbox.js": "bootbox#^4.4.0",
     "font-awesome-min": "^4.6.1",
-    "Chart.js": "^2.1.2"
+    "Chart.js": "^2.1.2",
+    "randomcolor": "^0.4.4"
   }
 }
