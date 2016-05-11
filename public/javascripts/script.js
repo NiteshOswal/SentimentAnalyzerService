@@ -12,6 +12,8 @@ if (!Object.values) {
     };
 }
 
+var pieNgrams = null;
+
 function calRating(id = "", isChart = false, autosubmit = false) { //this assumes ES6 support - TODO - remove this and set defaults..
   $('#details'+id).show();
   $('#htopic'+id).html($("#topic"+id).val());
@@ -146,7 +148,8 @@ function calRating(id = "", isChart = false, autosubmit = false) { //this assume
           $.get('/ngram?topic=' + encodeURI(topic) + "&date=" + encodeURI($("#date").val()) + "&count=2", function(ngram) {
               console.log(ngram);
               if(ngram.status) {
-                  var pieNgrams = new Chart($("#pie-ngrams"), {
+                  if(pieNgrams) pieNgrams.destroy();
+                  pieNgrams = new Chart($("#pie-ngrams"), {
                       type: 'pie',
                       data: {
                           labels: ngram.data.map((v) => { return v.name; }),
@@ -196,6 +199,48 @@ function calRating(id = "", isChart = false, autosubmit = false) { //this assume
 
 }
 
+function calNGram(id, opt='inc'){
+  var topic = $("#topic"+id).val();
+  var n;
+  if(opt==='inc'){
+    n = parseInt($("#ngram_n").html())+1;
+  }
+  else {
+    n = parseInt($("#ngram_n").html())-1;
+  }
+  $("#ngram_n").html(" "+n);
+  $("#ngram_status").html("Processing...");
+  $.get('/ngram?topic=' + encodeURI(topic) + "&date=" + encodeURI($("#date").val()) + "&count="+n, function(ngram) {
+      $("#ngram_status").html("");
+      console.log(ngram);
+
+      if(ngram.status) {
+        if(pieNgrams) pieNgrams.destroy();
+        pieNgrams = new Chart($("#pie-ngrams"),{
+            type: 'pie',
+            data: {
+              labels: ngram.data.map((v) => { return v.name; }),
+              datasets: [{
+                  data: ngram.data.map((v) => {return v.count; }),
+                  backgroundColor: randomColor({count: ngram.data.length, 'hue': 'green'})
+              }]
+            }
+          });
+          pieNgrams.destroy();
+          pieNgrams = new Chart($("#pie-ngrams"), {
+              type: 'pie',
+              data: {
+                  labels: ngram.data.map((v) => { return v.name; }),
+                  datasets: [{
+                      data: ngram.data.map((v) => {return v.count; }),
+                      backgroundColor: randomColor({count: ngram.data.length, 'hue': 'green'})
+                  }]
+              }
+          });
+      }
+  });
+}
+
 $(document).ready(function() {
 
     $("#compareBtn").on('click', function() {
@@ -207,6 +252,12 @@ $(document).ready(function() {
       calRating('',true)
     });
 
+    $("#increaseBtn").on('click', function(event){
+      calNGram('','inc');
+    });
+    $("#decreaseBtn").on('click', function(event){
+      calNGram('','dec');
+    });
 
     $(".btn-flush").on('click', function() {
         var self = this;
