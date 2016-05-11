@@ -113,6 +113,15 @@ function calRating(id = "", isChart = false, autosubmit = false) { //this assume
                           return v.total_score;
                       })
                   }]
+              },
+              options: {
+                scales: {
+                  yAxes: [{
+                    ticks: {
+                      beginAtZero:true
+                    }
+                  }]
+                }
               }
           });
           var pieFeedback = new Chart($('#pie-feedback'), {
