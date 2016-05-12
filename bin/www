@@ -106,7 +106,7 @@ wsServer.on('request', function(req){
     if(message.type === 'utf8'){
       var query = JSON.parse(message.utf8Data);
       var delay = 0;
-      if(query.method === 'collect'){
+      if(query.method === 'collect') {
         lib.collect(
           query.topic,
           parseInt(query.count),
@@ -125,10 +125,10 @@ wsServer.on('request', function(req){
           }
         );
       }
-      if(query.method === 'preprocess'){
+      if(query.method === 'preprocess') {
         lib.preprocess(
           query.topic,
-          '',
+          query.date,
           (data) => {
             delay++;
             var msg = {type:"data",data:delay};
@@ -149,10 +149,10 @@ wsServer.on('request', function(req){
           }
         );
       }
-      if(query.method === 'synthesize'){
+      if(query.method === 'synthesize') {
         lib.synthesize(
           query.topic,
-          '',
+          query.date,
           (data) => {
             delay++;
             var msg = {type:"data",data:delay};
