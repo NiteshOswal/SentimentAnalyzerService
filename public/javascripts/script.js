@@ -59,8 +59,6 @@ function calRating(id = "", isChart = false, autosubmit = false) { //this assume
       check = 0,
       msg = {method:'collect', topic:topic, count:count};
 
-  console.log(url);
-
   if(autosubmit) {
     msg.method = 'preprocess';
     msg.date = $("#date").val();
