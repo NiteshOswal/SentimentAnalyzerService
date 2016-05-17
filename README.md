@@ -9,9 +9,9 @@ With keen focus towards the polarity classification method, we propose easy to u
 
 ## Requirements
 
-1. Node.js
-2. NPM
-3. Bower
+1. Node.js >= v5.8.0
+2. NPM >= 3.7.3
+3. Bower >= 1.7.9
 
 ## How to run it?
 
@@ -20,6 +20,13 @@ With keen focus towards the polarity classification method, we propose easy to u
 npm install
 bower install
 ```
+[Setup a Twitter application](https://apps.twitter.com/ "Twitter Application Dashboard")
+
+In the project's root
+```bash
+cp config.json.example config.json
+```
+Add your Twitter application's necessary credentials in config.json & you're all set!
 
 **Execution!**
 
