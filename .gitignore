@@ -6,4 +6,5 @@ dumps/metas/*.json
 dumps/logs/*.log
 
 test.js
+config.json
 npm-debug.log

@@ -1,9 +1,9 @@
 {
     "twitter": {
-        "consumer_key": "IIX5PPBETIkAp5LSUjlutm4pw",
-        "consumer_secret": "tEI0l330Jnzs0BCXd8l6VhfCMERizQ5QKtPT72qcHSAmoGvCSW",
-        "access_token_key": "1034363990-2TESlEpWCQfChchJsOYDFmuOE3EsXeSU2kak1Xq",
-        "access_token_secret": "rM1F3j5fCgdqJET8G3T5fLTIMGn4SiDOXLIxcPUhX6jbR"
+        "consumer_key": "<consumer_key>",
+        "consumer_secret": "<consumer_secret>",
+        "access_token_key": "<access_token_key>",
+        "access_token_secret": "<access_token_secret>"
     },
     "mongo": "mongodb://localhost/sas",
     "paths": {
