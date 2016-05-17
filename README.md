@@ -26,7 +26,7 @@ In the project's root
 ```bash
 cp config.json.example config.json
 ```
-Add your Twitter application's necessary credentials in config.json & you're all set!
+Add your Twitter application's necessary credentials in `config.json` & you're all set!
 
 **Execution!**
 
